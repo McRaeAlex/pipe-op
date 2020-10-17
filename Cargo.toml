@@ -1,0 +1,22 @@
+[package]
+name = "pipe-op"
+version = "0.1.0"
+authors = ["Alexander McRae <mcraealex16@gmail.com>"]
+edition = "2018"
+description = "The pipe operator as a macro in Rust"
+documentation = "https://docs.rs/pipe-op"
+readme = "README.md"
+repository = "https://github.com/mcraealex/pipe-op"
+license-file = "LICENSE"
+categories = ["utility"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "1.0", features=["extra-traits", "full"] }
+quote = "1.0"
+proc-macro2 = "1.0" 
+
+[dev-dependencies]
+trybuild = "1.0"
