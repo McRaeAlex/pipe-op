@@ -23,7 +23,7 @@ struct PipeInput {
 
 impl syn::parse::Parse for PipeInput {
     fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-        println!("{:#?}", input);
+        //println!("{:#?}", input);
         // get the inital expression
         let expr: syn::Expr = input.parse()?;
         input.parse::<syn::token::Comma>()?;

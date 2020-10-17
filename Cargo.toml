@@ -1,6 +1,6 @@
 [package]
 name = "pipe-op"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Alexander McRae <mcraealex16@gmail.com>"]
 edition = "2018"
 description = "The pipe operator as a macro in Rust"
