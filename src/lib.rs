@@ -80,20 +80,20 @@ fn get_rightmost_callable(e: &mut Expr) -> Option<Callable> {
         Expr::Call(f) => {
             // return this function
             return Some(Callable::Function(f));
-        },
+        }
         Expr::MethodCall(m) => {
             // it is possible that we can go further so we don't break
-            {
-                match get_rightmost_callable(m.receiver.as_mut()) {
-                    Some(val) => {
-                        return Some(val);
-                    },
-                    None => {},              
-                };
+            // this is some vodoo magic passed down to me by Mutabah on discord
+            // Its safe because m is never actually mutated untill after this
+            // function call
+            let something = unsafe { &mut *(m.receiver.as_mut() as *mut _) };
+            match get_rightmost_callable(something) {
+                Some(val) => Some(val),
+                None => {
+                    Some(Callable::Method(m))
+                }
             }
-            
-            Some(Callable::Method(m))
-        },
+        }
         Expr::Try(t) => get_rightmost_callable(t.expr.as_mut()),
         Expr::Await(a) => get_rightmost_callable(a.base.as_mut()),
         Expr::Field(f) => get_rightmost_callable(f.base.as_mut()),
