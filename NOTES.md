@@ -1,16 +1,34 @@
 # Notes
 
-Okay so now we have it parsed and handling functions in the form 
+This is actually now solved but needs testing an to fix a lifetime error.
+
+The error:
 
 ```rust
-pipe!(expr, callable(x,y,x,...), ....);
+let temp = inital_value;
+let tacker = None;
+
+loop {
+    match temp {
+        Value1 => {
+            tracker = Some(Enum::Var1(&mut value));
+            break;
+        },
+
+        Value2 => {
+            tracker = Some(Enum::Var2(&mut value));
+            // obviously i cannot mutably borrow value here because I already borrowed the value
+            temp = value.field.as_mut();
+        },
+        _ => {break;},
+    }
+}
+
+// mutate the tracker
 ```
 
-but we don't handle cases where the top level args aren't callable or are methods.
+How do I rework this such that I don't need to borrow mutably twice.
 
-We can accept these by parsing to the Callable enum but that doesn't solve how
-we figure out where the `expr` goes in the args.
+I suppose if we ran left to right I could just choose the first one but how does
+one convert it such that we go left to right.
 
-I think if we handle this on a case by case basic it should work. ie. first
-methods are tackled then we handle chained methods. After that the `try` 
-operator should be usable with the macro as which point it is released.

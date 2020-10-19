@@ -9,4 +9,3 @@ fn ui() {
     t.pass("tests/method.rs");
     // t.pass("tests/await.rs");
 }
-
