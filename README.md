@@ -13,7 +13,7 @@ pipe!(
     value,
     function1(args),
     function2(args)?, // notice the operator here
-    function3(args)
+    function3(args).await
 )
 ```
 
@@ -24,11 +24,17 @@ conn
 |> send_resp(404, "Not found")
 ```
 
-## Examples (treated as test cases)
+## Examples
 
 The argument will always go into the first function or method call.
 
 ```rust
-pipe!(value, a.f().m()) // is equivalent to a.f(x).m()
+pipe!(value, a.f().m()) // is equivalent to a.f(value).m()
+```
+
+To get around this we can make it a closure and pass the arg where we want.
+
+```rust
+pipe!(value, {|x| a.f().m(x)}()) // is equivalent to a.f().m(value)
 ```
 

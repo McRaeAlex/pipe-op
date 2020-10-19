@@ -1,14 +1,14 @@
 [package]
 name = "pipe-op"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Alexander McRae <mcraealex16@gmail.com>"]
 edition = "2018"
-description = "The pipe operator as a macro in Rust"
+description = "The elixir pipe operator as a macro in Rust"
 documentation = "https://docs.rs/pipe-op"
 readme = "README.md"
 repository = "https://github.com/mcraealex/pipe-op"
 license-file = "LICENSE"
-categories = ["utility"]
+categories = ["utility", "elixir", "functional"]
 
 [lib]
 proc-macro = true
