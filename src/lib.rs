@@ -103,6 +103,88 @@ fn get_rightmost_callable(e: &mut Expr) -> Option<Callable> {
 }
 
 #[proc_macro]
+/// pipe is a macro which allows you to do the same thing as `|>` in elixir
+/// 
+/// ```rust
+/// use pipe_op::pipe;
+///
+/// fn add(a: usize, b: usize) -> usize {
+///     a + b
+/// }
+///
+/// fn main() {
+///     let a = 10;
+///     assert_eq!(pipe!(a, add(10)), add(a, 10));
+/// }
+/// ```
+/// 
+/// pipe can be used to pipe any number of things into the next as long as 
+/// the result of the expression to the left's type is the same as the first
+/// argument of the expression on the right. This means async, try, and any 
+/// number of combinations will work.
+///
+/// ```rust
+/// use pipe_op::pipe;
+///
+/// fn add(a: usize, b: usize) -> Result<usize, Box<dyn std::error::Error>> {
+///     Ok(a + b)
+/// }
+///
+/// fn main() -> Result<(), Box<dyn std::error::Error>>{
+///     let e = 10;
+///     assert_eq!(pipe!(e, add(10)?), 20);
+///     Ok(())
+/// }
+/// ```
+///
+/// Methods work as well
+/// ```rust
+/// use pipe_op::pipe;
+///
+/// struct Adder {
+///     value: usize,
+/// }
+///
+/// impl Adder {
+///     fn add(&self, num: usize) -> usize {
+///         self.value + num
+///     }
+/// }
+///
+/// fn main() {
+///     let s = Adder { value: 10 };
+///     assert_eq!(11, pipe!(1, s.add()));
+/// }
+/// ```
+/// 
+/// and so does many operations
+///
+/// ```rust
+/// use pipe_op::pipe;
+///
+/// fn add(a: usize, b: usize) -> usize {
+///     a + b
+/// }
+///
+/// fn main() {
+///     assert_eq!(
+///         pipe!(
+///             1,
+///             add(10),
+///             add(10),
+///             add(10),
+///             add(10),
+///             add(10),
+///             add(10),
+///             add(10),
+///             add(10),
+///             add(10),
+///             add(10)
+///         ),
+///         101
+///     );
+/// }
+/// ```
 pub fn pipe(input: TokenStream) -> TokenStream {
     let input: PipeInput = parse_macro_input!(input);
     input.pipe_output().expect("Unacceptable input")
